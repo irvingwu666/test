@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-    <title>萌宠小铺 | 随机狗狗·猫咪图片生成器</title>
+    <title>吴越 · 简历与萌宠小铺</title>
+    <!-- 合并双方字体/图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        /* ---------- 全局重置 & 合并布局 ---------- */
         * {
             margin: 0;
             padding: 0;
@@ -13,18 +17,477 @@
         }
 
         body {
-            background: linear-gradient(145deg, #f9f3e6 0%, #ffe6d5 100%);
+            background: #eef2f5;   /* 中性柔和底色 */
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            padding: 32px 24px;
             min-height: 100vh;
-            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
-            padding: 1.5rem 1rem 2.5rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
-        /* 主卡片容器 */
+        /* 双栏融合网格 */
+        .hybrid-layout {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 0.9fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        /* 响应式：移动端堆叠 */
+        @media (max-width: 900px) {
+            body {
+                padding: 20px 16px;
+            }
+            .hybrid-layout {
+                grid-template-columns: 1fr;
+                gap: 36px;
+            }
+        }
+
+        /* ========= 左侧：吴越简历样式 (基于原版，适配合并容器) ========= */
+        .resume-container {
+            background: transparent;
+            width: 100%;
+        }
+        /* 覆盖原简历 .container 限制，使其填满左侧区域 */
+        .resume-container .container {
+            max-width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        /* 保持原有卡片呼吸感，微调边距 */
+        .resume-container .header {
+            margin-bottom: 30px;
+        }
+        .resume-container .card {
+            margin-bottom: 28px;
+        }
+        /* 确保footer不会超出 */
+        .resume-container .footer {
+            margin-top: 20px;
+        }
+
+        /* 原简历全部样式 (保持视觉完全一致) */
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #0f4c75;
+            --light-accent: #3282b8;
+            --text-color: #333;
+            --light-text: #666;
+            --background: #f8f9fa;
+            --card-bg: #ffffff;
+            --border-color: #eaeaea;
+        }
+        
+        .resume-container {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            line-height: 1.7;
+        }
+        
+        .resume-container .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .resume-container .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .resume-container .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--light-accent) 0%, transparent 100%);
+        }
+        
+        .resume-container .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .resume-container .profile-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .resume-container .name {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+        
+        .resume-container .title {
+            font-size: 1.3rem;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-bottom: 25px;
+        }
+        
+        .resume-container .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 25px;
+        }
+        
+        .resume-container .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .resume-container .contact-item i {
+            color: var(--light-accent);
+            font-size: 1.1rem;
+        }
+        
+        .resume-container .profile-image-container {
+            width: 220px;
+            height: 280px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            background-color: #f0f0f0;
+        }
+        
+        .resume-container .profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .resume-container .profile-image:hover {
+            transform: scale(1.05);
+        }
+        
+        .resume-container .image-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .resume-container .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        @media (max-width: 900px) {
+            .resume-container .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .resume-container .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .resume-container .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .resume-container .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-accent);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .resume-container .section-title i {
+            color: var(--accent-color);
+        }
+        
+        .resume-container .info-item {
+            display: flex;
+            margin-bottom: 18px;
+        }
+        
+        .resume-container .info-label {
+            font-weight: 600;
+            min-width: 100px;
+            color: var(--light-text);
+        }
+        
+        .resume-container .info-content {
+            flex: 1;
+            color: var(--text-color);
+        }
+        
+        .resume-container .hobbies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+        }
+        
+        .resume-container .hobby-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+        }
+        
+        .resume-container .hobby-card:hover {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.15);
+        }
+        
+        .resume-container .hobby-icon {
+            font-size: 2.2rem;
+            color: var(--light-accent);
+            margin-bottom: 15px;
+        }
+        
+        .resume-container .hobby-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+        
+        .resume-container .hobby-desc {
+            font-size: 0.9rem;
+            color: var(--light-text);
+            line-height: 1.5;
+        }
+        
+        .resume-container .education-card {
+            background: linear-gradient(to right, #f8f9fa, #ffffff);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--light-accent);
+        }
+        
+        .resume-container .education-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .resume-container .education-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .resume-container .education-date {
+            font-size: 0.9rem;
+            color: var(--light-accent);
+            font-weight: 500;
+            background-color: rgba(50, 130, 184, 0.1);
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+        
+        .resume-container .education-details {
+            color: var(--light-text);
+            font-size: 0.95rem;
+        }
+        
+        .resume-container .course-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .resume-container .course-tag {
+            background-color: rgba(50, 130, 184, 0.1);
+            color: var(--light-accent);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .resume-container .personal-statement {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f0ff 100%);
+            border-radius: 12px;
+            padding: 35px;
+            margin-top: 20px;
+            border-left: 5px solid var(--light-accent);
+        }
+        
+        .resume-container .statement-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .resume-container .statement-text {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-color);
+        }
+        
+        .resume-container .skill-item {
+            margin-bottom: 20px;
+        }
+        
+        .resume-container .skill-name {
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+        
+        .resume-container .skill-bar {
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .resume-container .skill-level {
+            height: 100%;
+            background: linear-gradient(90deg, var(--light-accent), #4ea8de);
+            border-radius: 4px;
+        }
+        
+        .resume-container .achievements {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .resume-container .achievement-item {
+            background-color: rgba(50, 130, 184, 0.08);
+            border-radius: 10px;
+            padding: 15px;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .resume-container .achievement-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .resume-container .footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--light-text);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
+        }
+        
+        .resume-container .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .resume-container .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .resume-container .social-link:hover {
+            background-color: var(--light-accent);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        @media (max-width: 768px) {
+            .resume-container .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .resume-container .profile-image-container {
+                margin-top: 30px;
+                width: 200px;
+                height: 250px;
+            }
+            .resume-container .name {
+                font-size: 2.5rem;
+            }
+            .resume-container .contact-info {
+                justify-content: center;
+            }
+            .resume-container .hobbies-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ========= 右侧：萌宠小铺样式 (保留原版可爱风格，适配合并容器) ========= */
+        .pet-wrapper {
+            background: linear-gradient(145deg, #f9f3e6 0%, #ffe6d5 100%);
+            border-radius: 48px;
+            padding: 1.8rem 1.5rem;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+            height: fit-content;
+        }
+
+        /* 原宠物生成器核心样式 (移除了body依赖，完美适配卡片) */
         .pet-card {
-            max-width: 560px;
+            max-width: 100%;
             width: 100%;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.92);
@@ -37,7 +500,7 @@
             border: 1px solid rgba(255, 245, 225, 0.8);
         }
 
-        h1 {
+        .pet-card h1 {
             font-size: 1.9rem;
             font-weight: 700;
             text-align: center;
@@ -54,11 +517,11 @@
             flex-wrap: wrap;
         }
 
-        h1 span {
+        .pet-card h1 span {
             font-size: 2rem;
         }
 
-        .sub {
+        .pet-card .sub {
             text-align: center;
             color: #b47c48;
             font-weight: 500;
@@ -72,7 +535,6 @@
             padding-bottom: 6px;
         }
 
-        /* 模式切换按钮组 */
         .mode-switch {
             display: flex;
             gap: 12px;
@@ -112,14 +574,12 @@
 
         .mode-btn:active { transform: scale(0.96); }
         
-        /* 图片展示区 */
         .image-container {
             background: #fef3e4;
             border-radius: 36px;
             padding: 1rem;
             margin-bottom: 1.5rem;
             box-shadow: inset 0 2px 6px rgba(0,0,0,0.02), 0 8px 20px rgba(0,0,0,0.1);
-            transition: all 0.2s;
         }
 
         .image-wrapper {
@@ -144,7 +604,6 @@
             border-radius: 28px;
         }
 
-        /* 加载 & 错误区域 */
         .status-area {
             min-height: 60px;
             margin: 12px 0 18px;
@@ -198,7 +657,6 @@
             display: none !important;
         }
 
-        /* 换一张按钮 */
         .refresh-btn {
             background: linear-gradient(105deg, #fdaa4b, #ff8c2c);
             border: none;
@@ -232,7 +690,6 @@
             filter: grayscale(0.05);
         }
 
-        /* 可爱脚丫装饰 */
         .footer-note {
             text-align: center;
             font-size: 0.7rem;
@@ -243,7 +700,6 @@
             gap: 10px;
         }
 
-        /* 移动端精细化 */
         @media (max-width: 500px) {
             .pet-card {
                 padding: 1.3rem 1rem 1.8rem;
@@ -257,329 +713,288 @@
                 padding: 0.8rem 0;
                 width: 100%;
             }
-            h1 {
+            .pet-card h1 {
                 font-size: 1.6rem;
             }
         }
 
-        /* 淡入辅助 (opacity 由js控制过渡) */
         .img-loaded {
             opacity: 1 !important;
-        }
-
-        button {
-            background: none;
-            border: none;
         }
     </style>
 </head>
 <body>
-
-<div class="pet-card">
-    <h1>
-        <span>🐕‍🦺</span> 萌宠任意门 <span>🐈</span>
-    </h1>
-    <div style="text-align: center;">
-        <div class="sub">一键召唤 · 毛茸茸治愈力</div>
-    </div>
-
-    <!-- 切换模式 狗狗 / 猫咪 / 随机 -->
-    <div class="mode-switch">
-        <button class="mode-btn" data-mode="dog" id="modeDog">🐶 只看狗狗</button>
-        <button class="mode-btn" data-mode="cat" id="modeCat">🐱 只看猫咪</button>
-        <button class="mode-btn" data-mode="random" id="modeRandom">🎲 随机惊喜</button>
-    </div>
-
-    <!-- 图片展示区 -->
-    <div class="image-container">
-        <div class="image-wrapper">
-            <img id="petImage" alt="萌宠照片" src="" />
+<div class="hybrid-layout">
+    <!-- 左侧：吴越简历区域 -->
+    <div class="resume-container">
+        <div class="container">
+            <header class="header">
+                <div class="header-content">
+                    <div class="profile-section">
+                        <h1 class="name">吴越</h1>
+                        <p class="title">瑞安中学国际部 • 经济学方向学生</p>
+                        <div class="contact-info">
+                            <div class="contact-item"><i class="fas fa-birthday-cake"></i><span>2008年6月26日</span></div>
+                            <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>浙江省</span></div>
+                            <div class="contact-item"><i class="fas fa-graduation-cap"></i><span>高中学历</span></div>
+                            <div class="contact-item"><i class="fas fa-book"></i><span>经济学专业</span></div>
+                        </div>
+                    </div>
+                    <div class="profile-image-container">
+                        <img src="https://ts1.tc.mm.bing.net/th/id/R-C.9264763fbc5aefc46aeafdb43964c25b?rik=iY%2brwawzqoyVkQ&riu=http%3a%2f%2fmat1.gtimg.com%2fcd%2fimage%2f2014%2fxyss11%2fh5-p3_person1.png&ehk=1Bw7qhwzYOaZLrV4D29I4UCMubaqpyVJcU%2f6Bgh62kA%3d&risl=&pid=ImgRaw&r=0" 
+                             alt="吴越证件照" 
+                             class="profile-image"
+                             onerror="this.onerror=null; this.src='https://via.placeholder.com/220x280/3282b8/ffffff?text=吴越'">
+                        <div class="image-label">证件照</div>
+                    </div>
+                </div>
+            </header>
+            <div class="main-content">
+                <div class="left-column">
+                    <div class="card"><h2 class="section-title"><i class="fas fa-user-circle"></i> 个人信息</h2>
+                        <div class="info-item"><div class="info-label">姓名</div><div class="info-content">吴越</div></div>
+                        <div class="info-item"><div class="info-label">性别</div><div class="info-content">男</div></div>
+                        <div class="info-item"><div class="info-label">出生日期</div><div class="info-content">2008年6月26日</div></div>
+                        <div class="info-item"><div class="info-label">所在地</div><div class="info-content">浙江省</div></div>
+                        <div class="info-item"><div class="info-label">学校</div><div class="info-content">瑞安中学国际部</div></div>
+                        <div class="info-item"><div class="info-label">专业方向</div><div class="info-content">经济学</div></div>
+                    </div>
+                    <div class="card"><h2 class="section-title"><i class="fas fa-cogs"></i> 学术技能</h2>
+                        <div class="skill-item"><div class="skill-name">经济学理论</div><div class="skill-bar"><div class="skill-level" style="width: 85%"></div></div></div>
+                        <div class="skill-item"><div class="skill-name">数学分析</div><div class="skill-bar"><div class="skill-level" style="width: 90%"></div></div></div>
+                        <div class="skill-item"><div class="skill-name">统计学</div><div class="skill-bar"><div class="skill-level" style="width: 80%"></div></div></div>
+                        <div class="skill-item"><div class="skill-name">金融知识</div><div class="skill-bar"><div class="skill-level" style="width: 75%"></div></div></div>
+                        <div class="skill-item"><div class="skill-name">英语能力</div><div class="skill-bar"><div class="skill-level" style="width: 88%"></div></div></div>
+                    </div>
+                    <div class="card"><h2 class="section-title"><i class="fas fa-trophy"></i> 近期成就</h2>
+                        <div class="achievements"><div class="achievement-item"><div class="achievement-title"><i class="fas fa-award"></i>经济学竞赛</div><p>2023年校级经济学知识竞赛一等奖</p></div>
+                        <div class="achievement-item"><div class="achievement-title"><i class="fas fa-basketball-ball"></i>体育成就</div><p>校篮球队主力，2023年市级高中篮球赛四强</p></div></div>
+                    </div>
+                </div>
+                <div class="right-column">
+                    <div class="card"><h2 class="section-title"><i class="fas fa-graduation-cap"></i> 教育背景</h2>
+                        <div class="education-card"><div class="education-header"><div class="education-title">瑞安中学国际部</div><div class="education-date">2021年至今</div></div>
+                        <div class="education-details"><p>高中阶段，主修经济学方向，GPA: 3.8/4.0</p><p>课程重点：宏观经济学、微观经济学、统计学、微积分、国际商务、金融学基础</p>
+                        <div class="course-list"><div class="course-tag">AP微观经济学</div><div class="course-tag">AP宏观经济学</div><div class="course-tag">AP微积分AB</div><div class="course-tag">AP化学</div><div class="course-tag">国际商务</div><div class="course-tag">金融学基础</div></div></div></div>
+                        <div class="education-card"><div class="education-header"><div class="education-title">经济学学术研究</div><div class="education-date">2023年</div></div>
+                        <div class="education-details"><p>独立研究项目："数字货币对传统货币政策的影响"</p><p>参与学校经济学社，担任副社长，定期组织研讨会，探讨当前经济热点问题</p><p>阅读大量经济学著作，包括《经济学原理》、《货币金融学》、《行为经济学》等</p></div></div>
+                    </div>
+                    <div class="card"><h2 class="section-title"><i class="fas fa-heart"></i> 兴趣爱好</h2><p style="margin-bottom: 20px; color: var(--light-text);">我的兴趣爱好丰富多样，既有体育活动的激情，也有文化艺术的熏陶。</p>
+                        <div class="hobbies-grid">
+                            <div class="hobby-card"><div class="hobby-icon"><i class="fas fa-basketball-ball"></i></div><div class="hobby-title">篮球运动</div><div class="hobby-desc">校篮球队成员，司职得分后卫。每周训练4次，擅长快速突破。</div></div>
+                            <div class="hobby-card"><div class="hobby-icon"><i class="fas fa-book-open"></i></div><div class="hobby-title">漫画阅读</div><div class="hobby-desc">热爱日本漫画，收藏超过150册。最喜欢《地缚少年花子君》。</div></div>
+                            <div class="hobby-card"><div class="hobby-icon"><i class="fas fa-chart-line"></i></div><div class="hobby-title">经济学研究</div><div class="hobby-desc">关注全球经济动态，定期阅读《经济学人》、《华尔街日报》等刊物。</div></div>
+                            <div class="hobby-card"><div class="hobby-icon"><i class="fas fa-music"></i></div><div class="hobby-title">音乐欣赏</div><div class="hobby-desc">热爱古典音乐和电影原声，音乐帮助我在紧张的学习中放松心情。</div></div>
+                        </div>
+                    </div>
+                    <div class="personal-statement"><div class="statement-title"><i class="fas fa-quote-left"></i> 个人陈述</div><div class="statement-text">作为一名瑞安中学国际部经济学方向的学生，我深信经济学不仅是研究资源分配的学科，更是理解社会运行规律、预测未来趋势的重要工具。我的目标是将经济理论与现实世界的问题相结合，未来在大学深入学习经济学，并关注数字货币、行为经济学等前沿领域。篮球和漫画不仅是我放松的方式，更让我学会了坚持、合作与战略思考——这些品质也体现在我的学术追求中。我相信，通过持续学习和实践，我能够为未来的经济学领域做出贡献，并将我的分析能力应用于解决实际问题。</div></div>
+                </div>
+            </div>
+            <footer class="footer"><p>© <span id="currentYear">2025</span> 吴越 - 个人简历</p><p>联系方式: wuyue.razx@outlook.com | 电话: +86 137 8013 2644</p><div class="social-links"><a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a><a href="#" class="social-link"><i class="fab fa-weixin"></i></a><a href="#" class="social-link"><i class="fab fa-github"></i></a><a href="#" class="social-link"><i class="fas fa-envelope"></i></a></div></footer>
         </div>
     </div>
 
-    <!-- 动态状态栏 (loading / 错误) -->
-    <div class="status-area">
-        <div id="loadingMsg" class="loading-message hidden">
-            <span id="loadingText">正在召唤萌宠...</span>
+    <!-- 右侧：萌宠小铺（完整宠物生成器） -->
+    <div class="pet-wrapper">
+        <div class="pet-card">
+            <h1><span>🐕‍🦺</span> 萌宠任意门 <span>🐈</span></h1>
+            <div style="text-align: center;"><div class="sub">一键召唤 · 毛茸茸治愈力</div></div>
+            <div class="mode-switch">
+                <button class="mode-btn" data-mode="dog" id="modeDog">🐶 只看狗狗</button>
+                <button class="mode-btn" data-mode="cat" id="modeCat">🐱 只看猫咪</button>
+                <button class="mode-btn" data-mode="random" id="modeRandom">🎲 随机惊喜</button>
+            </div>
+            <div class="image-container"><div class="image-wrapper"><img id="petImage" alt="萌宠照片" src="" /></div></div>
+            <div class="status-area">
+                <div id="loadingMsg" class="loading-message hidden"><span id="loadingText">正在召唤萌宠...</span></div>
+                <div id="errorMsg" class="error-message hidden"><span>⚠️</span> <span id="errorText">网络开小差了</span></div>
+            </div>
+            <button class="refresh-btn" id="refreshBtn"><span>✨</span> 换一张 <span>🎲</span></button>
+            <div class="footer-note"><span>🐾 每张都是独一无二</span><span>❤️ 治愈系API</span></div>
         </div>
-        <div id="errorMsg" class="error-message hidden">
-            <span>⚠️</span> <span id="errorText">网络开小差了</span>
-        </div>
-    </div>
-
-    <!-- 换一张按钮 -->
-    <button class="refresh-btn" id="refreshBtn">
-        <span>✨</span> 换一张 <span>🎲</span>
-    </button>
-    <div class="footer-note">
-        <span>🐾 每张都是独一无二</span>
-        <span>❤️ 治愈系API</span>
     </div>
 </div>
 
 <script>
-    // ---------- DOM 元素 ----------
-    const petImage = document.getElementById('petImage');
-    const refreshBtn = document.getElementById('refreshBtn');
-    const modeDogBtn = document.getElementById('modeDog');
-    const modeCatBtn = document.getElementById('modeCat');
-    const modeRandomBtn = document.getElementById('modeRandom');
-    const loadingDiv = document.getElementById('loadingMsg');
-    const loadingTextSpan = document.getElementById('loadingText');
-    const errorDiv = document.getElementById('errorMsg');
-    const errorTextSpan = document.getElementById('errorText');
+    // ========= 1. 简历部分：动画 + 兴趣爱好弹窗 + 年份更新 =========
+    (function() {
+        const currentYear = new Date().getFullYear();
+        const yearSpan = document.getElementById('currentYear');
+        if (yearSpan) yearSpan.textContent = currentYear;
 
-    // ---------- 全局状态 ----------
-    let currentMode = 'dog';       // 'dog', 'cat', 'random'
-    let isLoading = false;         // 防止并发请求 + 按钮禁用
-    
-    // ---------- 辅助函数 UI 控制 ----------
-    function showLoading(customMessage = null) {
-        // 根据当前模式展示对应文案 (如果是random会动态改，但调用前可传入)
-        if (customMessage) {
-            loadingTextSpan.innerText = customMessage;
-        } else {
-            if (currentMode === 'dog') loadingTextSpan.innerText = '🐕 汪汪加载中...';
-            else if (currentMode === 'cat') loadingTextSpan.innerText = '🐈 喵喵加载中...';
-            else loadingTextSpan.innerText = '🎲 随机召唤萌宠中...';
-        }
-        loadingDiv.classList.remove('hidden');
-        errorDiv.classList.add('hidden');
-    }
-
-    function hideLoading() {
-        loadingDiv.classList.add('hidden');
-    }
-
-    function showError(message) {
-        errorTextSpan.innerText = message || '网络出问题啦！请重试～';
-        errorDiv.classList.remove('hidden');
-        loadingDiv.classList.add('hidden');
-    }
-
-    function hideError() {
-        errorDiv.classList.add('hidden');
-    }
-
-    // 启用/禁用交互组件 (防止并发)
-    function setControlsEnabled(enabled) {
-        const btns = [refreshBtn, modeDogBtn, modeCatBtn, modeRandomBtn];
-        btns.forEach(btn => {
-            if (enabled) {
-                btn.removeAttribute('disabled');
-            } else {
-                btn.setAttribute('disabled', 'disabled');
-            }
-        });
-    }
-
-    // 高亮当前模式按钮样式
-    function updateActiveModeButton() {
-        modeDogBtn.classList.remove('active');
-        modeCatBtn.classList.remove('active');
-        modeRandomBtn.classList.remove('active');
-        if (currentMode === 'dog') modeDogBtn.classList.add('active');
-        else if (currentMode === 'cat') modeCatBtn.classList.add('active');
-        else if (currentMode === 'random') modeRandomBtn.classList.add('active');
-    }
-
-    // 图片淡入核心: 预加载 + 设置src + 淡入效果 (通过opacity过渡)
-    function loadImageWithFade(imageUrl) {
-        return new Promise((resolve, reject) => {
-            if (!imageUrl) {
-                reject(new Error('无效的图片地址'));
-                return;
-            }
-            // 先设置透明度为0，清除之前的过渡残留
-            petImage.style.opacity = '0';
-            // 利用 Image 对象预加载，保证图片缓存后再设置 src，避免加载闪烁同时确保onload可靠
-            const tempImg = new Image();
-            tempImg.onload = () => {
-                // 图片加载完成，将地址赋给 img 标签 (由于缓存，即刻显示)
-                petImage.src = imageUrl;
-                // 强制让浏览器应用新src后 触发再渲染
-                // 等待下一帧确保 opacity 过渡生效
-                requestAnimationFrame(() => {
-                    // 添加过渡样式 (已经在CSS中定义 transition)
-                    petImage.style.opacity = '1';
-                    // 可选: 如果因为某些原因未触发, 添加类保险
-                    petImage.classList.add('img-loaded');
-                    resolve(true);
-                });
-            };
-            tempImg.onerror = () => {
-                reject(new Error('图片加载失败，可能链接失效'));
-            };
-            tempImg.src = imageUrl;
-        });
-    }
-
-    // ---------- API 请求封装 (狗狗) ----------
-    async function fetchDogImage() {
-        const url = 'https://dog.ceo/api/breeds/image/random';
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`狗狗API响应错误 ${response.status}`);
-        }
-        const data = await response.json();
-        if (data.status === 'success' && data.message) {
-            return data.message;   // 图片URL
-        } else {
-            throw new Error('狗狗API返回数据异常');
-        }
-    }
-
-    // 猫咪API (thecatapi)
-    async function fetchCatImage() {
-        const url = 'https://api.thecatapi.com/v1/images/search';
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`猫咪API响应错误 ${response.status}`);
-        }
-        const data = await response.json();
-        if (Array.isArray(data) && data.length > 0 && data[0].url) {
-            return data[0].url;
-        } else {
-            throw new Error('猫咪API返回格式异常');
-        }
-    }
-
-    // 随机模式: 内部随机决定调用狗狗或猫咪 (50%/50%)
-    async function fetchRandomImage() {
-        const isDog = Math.random() < 0.5;
-        if (isDog) {
-            const imgUrl = await fetchDogImage();
-            return { type: 'dog', url: imgUrl };
-        } else {
-            const imgUrl = await fetchCatImage();
-            return { type: 'cat', url: imgUrl };
-        }
-    }
-
-    // 核心：根据当前模式获取图片URL (返回url字符串，并附带可选的loading文案类型)
-    async function getImageUrlByMode() {
-        if (currentMode === 'dog') {
-            const url = await fetchDogImage();
-            return { url, modeType: 'dog' };
-        } else if (currentMode === 'cat') {
-            const url = await fetchCatImage();
-            return { url, modeType: 'cat' };
-        } else if (currentMode === 'random') {
-            const { type, url } = await fetchRandomImage();
-            return { url, modeType: type };   // 返回实际抽中的类型 用于loading文案
-        } else {
-            throw new Error('未知模式');
-        }
-    }
-
-    // 展示图片主流程：获取URL -> 淡入加载 -> 处理loading/错误
-    async function refreshPicture() {
-        // 防止并发点击
-        if (isLoading) return;
-        isLoading = true;
-        setControlsEnabled(false);
-        hideError();
-        
-        // 决定loading时候的趣味文案 (根据当前模式或者随机预判)
-        let loadingMessage = '';
-        if (currentMode === 'dog') loadingMessage = '🐕 汪汪加载中...';
-        else if (currentMode === 'cat') loadingMessage = '🐈 喵喵加载中...';
-        else loadingMessage = '🎲 随机惊喜加载中...';
-        showLoading(loadingMessage);
-        
-        try {
-            // 1. 获取图片URL (可能根据随机模式返回实际类型)
-            const { url, modeType } = await getImageUrlByMode();
-            
-            // 如果随机模式下，为了更活泼，动态更新loading文案（显示抽中狗狗还是猫咪）
-            if (currentMode === 'random') {
-                if (modeType === 'dog') {
-                    loadingTextSpan.innerText = '🐕 随机抽中狗狗！汪汪加载中...';
-                } else {
-                    loadingTextSpan.innerText = '🐈 随机抽中猫咪！喵喵加载中...';
+        const cards = document.querySelectorAll('.resume-container .card, .resume-container .personal-statement');
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
                 }
-            } else if (currentMode === 'dog') {
-                loadingTextSpan.innerText = '🐕 汪汪加载中...';
-            } else if (currentMode === 'cat') {
-                loadingTextSpan.innerText = '🐈 喵喵加载中...';
+            });
+        }, observerOptions);
+        cards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(card);
+        });
+
+        const hobbyCards = document.querySelectorAll('.resume-container .hobby-card');
+        hobbyCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const title = this.querySelector('.hobby-title')?.textContent || '兴趣';
+                const desc = this.querySelector('.hobby-desc')?.textContent || '';
+                const modal = document.createElement('div');
+                modal.style.cssText = `position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; z-index:1000; opacity:0; transition:opacity 0.3s;`;
+                const modalContent = document.createElement('div');
+                modalContent.style.cssText = `background:white; padding:30px; border-radius:12px; max-width:500px; width:90%; transform:translateY(-20px); transition:transform 0.3s;`;
+                modalContent.innerHTML = `<h3 style="color:var(--primary-color); margin-bottom:15px; font-size:1.4rem;">${title}</h3><p style="color:var(--text-color); line-height:1.6;">${desc}</p><button style="margin-top:20px; padding:8px 20px; background:#3282b8; color:white; border:none; border-radius:6px; cursor:pointer;">关闭</button>`;
+                modal.appendChild(modalContent);
+                document.body.appendChild(modal);
+                setTimeout(() => { modal.style.opacity = '1'; modalContent.style.transform = 'translateY(0)'; }, 10);
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal || e.target.tagName === 'BUTTON') {
+                        modal.style.opacity = '0';
+                        modalContent.style.transform = 'translateY(-20px)';
+                        setTimeout(() => { if (modal.parentNode) modal.remove(); }, 300);
+                    }
+                });
+            });
+        });
+        const profileImg = document.querySelector('.resume-container .profile-image');
+        if (profileImg) profileImg.addEventListener('error', function() { this.src = 'https://via.placeholder.com/220x280/3282b8/ffffff?text=吴越'; });
+    })();
+
+    // ========= 2. 萌宠小铺独立脚本 (与左侧完全隔离但共用全局，无冲突) =========
+    (function() {
+        const petImage = document.getElementById('petImage');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const modeDogBtn = document.getElementById('modeDog');
+        const modeCatBtn = document.getElementById('modeCat');
+        const modeRandomBtn = document.getElementById('modeRandom');
+        const loadingDiv = document.getElementById('loadingMsg');
+        const loadingTextSpan = document.getElementById('loadingText');
+        const errorDiv = document.getElementById('errorMsg');
+        const errorTextSpan = document.getElementById('errorText');
+
+        let currentMode = 'dog';
+        let isLoading = false;
+
+        function showLoading(customMessage = null) {
+            if (customMessage) loadingTextSpan.innerText = customMessage;
+            else {
+                if (currentMode === 'dog') loadingTextSpan.innerText = '🐕 汪汪加载中...';
+                else if (currentMode === 'cat') loadingTextSpan.innerText = '🐈 喵喵加载中...';
+                else loadingTextSpan.innerText = '🎲 随机召唤萌宠中...';
             }
-            
-            // 2. 使用淡入动画加载图片
-            await loadImageWithFade(url);
-            // 加载成功后隐藏loading，保持图片可见
-            hideLoading();
-        } catch (err) {
-            console.error('获取萌宠失败:', err);
-            hideLoading();
-            let errorMsg = '召唤失败，挠挠屏幕重试吧！';
-            if (err.message.includes('狗狗API') || err.message.includes('猫咪API') || err.message.includes('fetch')) {
-                errorMsg = '网络小波动，稍后再试试～';
-            } else if (err.message.includes('图片加载失败')) {
-                errorMsg = '图片溜走了，点换一张抓回来~';
-            } else {
-                errorMsg = err.message || '出错了，再点一下✨';
+            loadingDiv.classList.remove('hidden');
+            errorDiv.classList.add('hidden');
+        }
+        function hideLoading() { loadingDiv.classList.add('hidden'); }
+        function showError(message) {
+            errorTextSpan.innerText = message || '网络出问题啦！请重试～';
+            errorDiv.classList.remove('hidden');
+            loadingDiv.classList.add('hidden');
+        }
+        function hideError() { errorDiv.classList.add('hidden'); }
+        function setControlsEnabled(enabled) {
+            [refreshBtn, modeDogBtn, modeCatBtn, modeRandomBtn].forEach(btn => {
+                if (enabled) btn.removeAttribute('disabled');
+                else btn.setAttribute('disabled', 'disabled');
+            });
+        }
+        function updateActiveModeButton() {
+            modeDogBtn.classList.remove('active');
+            modeCatBtn.classList.remove('active');
+            modeRandomBtn.classList.remove('active');
+            if (currentMode === 'dog') modeDogBtn.classList.add('active');
+            else if (currentMode === 'cat') modeCatBtn.classList.add('active');
+            else modeRandomBtn.classList.add('active');
+        }
+        function loadImageWithFade(imageUrl) {
+            return new Promise((resolve, reject) => {
+                if (!imageUrl) { reject(new Error('无效的图片地址')); return; }
+                petImage.style.opacity = '0';
+                const tempImg = new Image();
+                tempImg.onload = () => {
+                    petImage.src = imageUrl;
+                    requestAnimationFrame(() => {
+                        petImage.style.opacity = '1';
+                        petImage.classList.add('img-loaded');
+                        resolve(true);
+                    });
+                };
+                tempImg.onerror = () => reject(new Error('图片加载失败，可能链接失效'));
+                tempImg.src = imageUrl;
+            });
+        }
+        async function fetchDogImage() {
+            const res = await fetch('https://dog.ceo/api/breeds/image/random');
+            if (!res.ok) throw new Error(`狗狗API错误 ${res.status}`);
+            const data = await res.json();
+            if (data.status === 'success' && data.message) return data.message;
+            throw new Error('狗狗API异常');
+        }
+        async function fetchCatImage() {
+            const res = await fetch('https://api.thecatapi.com/v1/images/search');
+            if (!res.ok) throw new Error(`猫咪API错误 ${res.status}`);
+            const data = await res.json();
+            if (Array.isArray(data) && data[0]?.url) return data[0].url;
+            throw new Error('猫咪API异常');
+        }
+        async function fetchRandomImage() {
+            const isDog = Math.random() < 0.5;
+            if (isDog) return { type: 'dog', url: await fetchDogImage() };
+            else return { type: 'cat', url: await fetchCatImage() };
+        }
+        async function getImageUrlByMode() {
+            if (currentMode === 'dog') return { url: await fetchDogImage(), modeType: 'dog' };
+            if (currentMode === 'cat') return { url: await fetchCatImage(), modeType: 'cat' };
+            const { type, url } = await fetchRandomImage();
+            return { url, modeType: type };
+        }
+        async function refreshPicture() {
+            if (isLoading) return;
+            isLoading = true;
+            setControlsEnabled(false);
+            hideError();
+            showLoading();
+            try {
+                const { url, modeType } = await getImageUrlByMode();
+                if (currentMode === 'random') {
+                    loadingTextSpan.innerText = modeType === 'dog' ? '🐕 随机抽中狗狗！汪汪加载中...' : '🐈 随机抽中猫咪！喵喵加载中...';
+                }
+                await loadImageWithFade(url);
+                hideLoading();
+            } catch (err) {
+                console.error(err);
+                hideLoading();
+                showError('召唤失败，挠挠屏幕重试吧！');
+            } finally {
+                isLoading = false;
+                setControlsEnabled(true);
             }
-            showError(errorMsg);
-            // 图片出错时，保留旧图，但不清空也行，可以保留旧图，不额外操作
-        } finally {
+        }
+        function setMode(mode) {
+            if (isLoading) return;
+            if (mode === currentMode) return;
+            currentMode = mode;
+            updateActiveModeButton();
+            refreshPicture();
+        }
+        refreshBtn.addEventListener('click', refreshPicture);
+        modeDogBtn.addEventListener('click', () => setMode('dog'));
+        modeCatBtn.addEventListener('click', () => setMode('cat'));
+        modeRandomBtn.addEventListener('click', () => setMode('random'));
+        async function init() {
+            currentMode = 'dog';
+            updateActiveModeButton();
             isLoading = false;
             setControlsEnabled(true);
+            await refreshPicture();
         }
-    }
-
-    // 切换模式逻辑 (改变当前模式，然后自动刷新图片)
-    function setMode(mode) {
-        if (isLoading) return;   // 如果正在加载，稍等再响应模式切换（提升体验，直接return但用户需再点一次）
-        if (mode === currentMode) return;
-        currentMode = mode;
-        updateActiveModeButton();
-        // 切换模式后立即获取新图片
-        refreshPicture();
-    }
-
-    // ---------- 事件绑定 ----------
-    refreshBtn.addEventListener('click', () => {
-        refreshPicture();
-    });
-
-    modeDogBtn.addEventListener('click', () => {
-        setMode('dog');
-    });
-    modeCatBtn.addEventListener('click', () => {
-        setMode('cat');
-    });
-    modeRandomBtn.addEventListener('click', () => {
-        setMode('random');
-    });
-
-    // ---------- 初始化页面: 默认展示狗狗（且加载首张图片）----------
-    async function initPage() {
-        currentMode = 'dog';
-        updateActiveModeButton();
-        // 初次加载不使用全局loading锁冲突
-        isLoading = false;
-        setControlsEnabled(true);
-        // 显示初次加载动画
-        await refreshPicture();
-    }
-    
-    // 为了防止首次图片加载过程中用户不小心点击，保证一切优雅
-    initPage().catch(err => {
-        console.warn('初始化错误', err);
-        showError('欢迎来到萌宠小铺，手动点“换一张”试试看~');
-        setControlsEnabled(true);
-        isLoading = false;
-    });
-
-    // 附加优化：如果图片点击也可以刷新？ 不需要但用户体验可选，但保持清晰不添加额外干扰
-    // 并且确保在移动端触摸无300ms延迟
-    // 额外添加一个特性：当图片加载完成后，鼠标/触摸 hover 可爱提示
-    petImage.addEventListener('load', () => {
-        // 已由loadImageWithFade处理，但确保稳定性: 如果opacity因为某些异常未变1，这里兜底
-        if (petImage.style.opacity === '0' || getComputedStyle(petImage).opacity === '0') {
-            petImage.style.opacity = '1';
-        }
-    });
+        init();
+    })();
 </script>
 </body>
 </html>
